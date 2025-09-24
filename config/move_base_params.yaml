@@ -1,0 +1,13 @@
+base_global_planner: "navfn/NavfnROS"
+base_local_planner:  "teb_local_planner/TebLocalPlannerROS"
+
+controller_frequency: 10.0
+planner_frequency: 2.0
+
+recovery_behavior_enabled: false
+clearing_rotation_allowed: false
+
+xy_goal_tolerance: 0.25     # 위치 허용오차 (m)
+yaw_goal_tolerance: 0.35    # 각도 허용오차 (rad, ≈20도)
+
+oscillation_timeout : 0

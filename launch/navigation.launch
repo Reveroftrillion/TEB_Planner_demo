@@ -1,0 +1,9 @@
+<launch>
+  <rosparam file="$(find teb_stage_demo)/config/move_base_params.yaml" command="load"/>
+  <rosparam file="$(find teb_stage_demo)/config/costmap_common_params.yaml" command="load"/>
+  <rosparam file="$(find teb_stage_demo)/config/global_costmap_params.yaml" command="load"/>
+  <rosparam file="$(find teb_stage_demo)/config/local_costmap_params.yaml" command="load"/>
+  <rosparam file="$(find teb_stage_demo)/config/teb_local_planner_params.yaml" command="load"/>
+
+  <node pkg="move_base" type="move_base" name="move_base" output="screen" />
+</launch>

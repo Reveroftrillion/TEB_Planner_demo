@@ -1,0 +1,45 @@
+TebLocalPlannerROS:
+  odom_topic: /odom
+  map_frame: map
+  cmd_angle_instead_rotvel: false    # /cmd_vel.angular.z에 회전속도 대신 '조향각'을 실어요
+
+  ##### 속도/가속 제한 #####
+  max_vel_x: 0.6
+  max_vel_x_backwards: 0.5
+  max_vel_theta: 0.5
+  acc_lim_x: 0.8
+  acc_lim_theta: 0.5
+
+  ##### 차량형(애커만 유사) 제약 #####
+  #min_turning_radius: 1.5          # 너무 크면 목표 도달 어려울 수 있음(1.0~2.0에서 조절)
+  #wheelbase: 0.75
+
+  weight_kinematics_turning_radius: 0.5
+
+  ##### 주행 행동 #####
+  allow_init_with_backwards_motion: true
+  weight_kinematics_forward_drive: 0.0  # 0.0~1.0 (전진 선호도; 1.0 높이면 후진 잘 안함)
+  global_plan_overwrite_orientation: false
+  free_goal_vel: true
+
+  ##### 목표 허용 오차 (제자리 회전 억제에 도움) #####
+  xy_goal_tolerance: 0.20
+  yaw_goal_tolerance: 1.0
+  latch_xy_goal_tolerance: true
+  weight_goal_orientation: 0.0
+
+  ##### 시간/최적화 #####ㄴ
+  teb_autosize: true
+  dt_ref: 0.3
+  dt_hysteresis: 0.1
+
+
+  ##### 장애물/패딩 #####
+  min_obstacle_dist: 0.6
+  inflation_dist: 0.9
+  weight_obstacle: 80.0
+
+  ##### 풋프린트(TEB 내부 최적화용) — 로봇이 1.3 x 0.8m라면 이렇게 #####
+  footprint_model:
+    type: "polygon"
+    vertices: [[0.65, 0.40], [0.65, -0.40], [-0.65, -0.40], [-0.65, 0.40]]

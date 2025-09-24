@@ -1,0 +1,34 @@
+<launch>
+  <!-- Stage 시뮬레이터 -->
+  <node pkg="stage_ros" type="stageros" name="stageros"
+        args="$(find teb_stage_demo)/worlds/parallel_parking.world" output="screen"/>
+
+  <!-- 로봇 모델 TF (base_link / base_laser_link) -->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"/>
+  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher"/>
+
+  <!-- 맵 제공 (map_server) -->
+  <node pkg="map_server" type="map_server" name="map_server"
+        args="$(find teb_stage_demo)/maps/parallel_parking.yaml"/>
+
+  <!-- AMCL (map↔odom) -->
+  <node pkg="amcl" type="amcl" name="amcl" output="screen">
+    <param name="use_map_topic" value="true"/>
+    <param name="odom_model_type" value="diff"/>
+    <param name="laser_min_range" value="0.05"/>
+    <param name="laser_max_range" value="8.0"/>
+    <remap from="scan" to="/base_scan"/>
+  </node>
+
+  <!-- move_base + TEB -->
+  <rosparam file="$(find teb_stage_demo)/config/move_base_params.yaml" command="load" />
+  <rosparam file="$(find teb_stage_demo)/config/costmap_common_params.yaml" command="load" ns="move_base" />
+  <rosparam file="$(find teb_stage_demo)/config/global_costmap_params.yaml" command="load" ns="move_base" />
+  <rosparam file="$(find teb_stage_demo)/config/local_costmap_params.yaml"  command="load" ns="move_base" />
+  <rosparam file="$(find teb_stage_demo)/config/teb_local_planner_params.yaml" command="load" ns="move_base/TebLocalPlannerROS" />
+
+  <node pkg="move_base" type="move_base" name="move_base" output="screen" />
+
+  <!-- RViz 자동 실행 (중복 방지: 이름 rviz_pp) -->
+  <node pkg="rviz" type="rviz" name="rviz_pp" args="-d $(find teb_stage_demo)/rviz/teb_stage_demo.rviz" required="false" />
+</launch>

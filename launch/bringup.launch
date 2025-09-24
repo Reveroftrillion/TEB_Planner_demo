@@ -1,0 +1,18 @@
+<launch>
+  <!-- 로봇/로컬라이제이션/네비/rviz 런치 분리 -->
+  <include file="$(find teb_stage_demo)/launch/robot_desc.launch"/>
+  <include file="$(find teb_stage_demo)/launch/localization.launch"/>
+  <include file="$(find teb_stage_demo)/launch/navigation.launch"/>
+  <include file="$(find teb_stage_demo)/launch/rviz.launch"/>
+
+  <!-- (예전처럼 주석으로 남겨두고 싶다면) -->
+  <!-- <node pkg="rviz" type="rviz" name="rviz" args="-d $(find teb_stage_demo)/rviz/demo.rviz"/> -->
+
+  <!-- 정적 TF (gps → base_link) -->
+  <node pkg="tf" type="static_transform_publisher" name="gps_tf_pub"
+        args="-0.35 0 0  0 0 0  base_link gps  100"/>
+
+  <!-- 헤드라이트 마커 -->
+  <node pkg="teb_stage_demo" type="headlight_marker.py" name="headlight_marker" output="screen"/>
+</launch>
+

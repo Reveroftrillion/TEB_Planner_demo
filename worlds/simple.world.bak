@@ -1,0 +1,36 @@
+include "/opt/ros/noetic/share/stage/worlds/map.inc"
+include "/opt/ros/noetic/share/stage/worlds/sick.inc"
+
+window( size [600 600] scale 50 )
+
+# 바닥판: 높이 0.1로 얇게, 맵 중심(5,5)에 배치
+floorplan
+(
+  size   [10.0 10.0 0.1]
+  pose   [5.0 5.0 0.0 0.0]
+  bitmap "/home/reverof/catkin_ws/src/teb_stage_demo/maps/simple_map.pgm"
+)
+
+# 반드시 position 타입이어야 센서/드라이브가 붙음
+define robot position
+(
+  size  [0.45 0.30 0.30]
+  color "red"
+
+  # sick 레이저 (sick.inc)
+  sicklaser( range_max 6.0 fov 240.0 samples 240 )
+
+  # 차동 구동
+  drive "diff"
+)
+
+# 로봇도 맵 중심 근처에 스폰
+robot( pose [5.0 5.0 0.0 0.0] )
+
+# === 정적 장애물 정의 및 배치 ===
+define obs model
+(
+  size  [0.60 0.60 0.50]   # 가로 세로 높이(m)
+  color "blue"
+)
+obs( pose [6.0 5.0 0.0 0.0] )

@@ -1,0 +1,68 @@
+include "/opt/ros/noetic/share/stage/worlds/map.inc"
+include "/opt/ros/noetic/share/stage/worlds/sick.inc"
+
+window( size [600 600] scale 50 )
+
+# 바닥판: 높이 0.1로 얇게, 맵 중심(5,5)에 배치
+floorplan
+(
+  size   [10.0 10.0 0.1]
+  pose   [5.0 5.0 0.0 0.0]
+  bitmap "/home/reverof/catkin_ws/src/teb_stage_demo/maps/simple_map.pgm"
+)
+
+# 반드시 position 타입이어야 센서/드라이브가 붙음
+define robot position
+(
+  size  [1.3 0.8 0.6]
+  color "red"
+
+  sicklaser( range_max 12.0 fov 360.0 samples 360 )
+
+  # 차동 구동
+  drive "diff"
+
+)
+
+# 로봇도 맵 중심 근처에 스폰
+robot( pose [3.0 3.7 0.0 0.0] )
+
+# === T자 벽 정의 및 배치 ===
+define wall model
+(
+  size [2.0 0.2 0.5]   # 가로 2m, 세로 0.2m, 높이 0.5m
+  color "black"
+)
+
+# 수평 막대 (T 윗부분)
+# wall( pose [5.0 8.0 0.0 0.0] )
+
+# 수직 기둥 (T 아랫부분)
+# wall( pose [5.0 6.0 0.0 0.0] )
+
+# === 긴 벽 정의 ===
+define long_wall model
+(
+  size [6.0 0.2 0.5]   # 가로 6m, 세로 0.2m, 높이 0.5m
+  color "black"
+)
+
+# 왼쪽 벽
+long_wall( pose [3.0 6.0 0.0 0.0] )
+
+# 왼쪽 벽
+long_wall( pose [1.0 5.0 0.0 0.0] )
+
+# 오른쪽 벽
+long_wall( pose [8.0 6.0 0.0 0.0] )
+
+# 오른쪽 벽
+long_wall( pose [10.0 5.0 0.0 0.0] )
+
+# 수직 기둥 (T 아랫부분)
+wall( pose [4.0 6.0 0.0 90] )
+
+# 수직 기둥 (T 아랫부분)
+wall( pose [7.0 6.0 0.0 90] )
+
+

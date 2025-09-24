@@ -1,0 +1,61 @@
+<launch>
+  <!-- 로봇 TF (base_link, base_laser_link) -->
+  <param name="robot_description" textfile="$(find teb_stage_demo)/urdf/simple.urdf"/>
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"/>
+  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher"/>
+
+  <!-- 공통 코스트맵 설정(footprint, sensor) -->
+  <rosparam file="$(find teb_stage_demo)/config/costmap_common_params.yaml" command="load" ns="move_base"/>
+
+  <!-- ★ 글로벌/로컬 코스트맵을 전부 odom 기준으로, static_map 없이 rolling window로 구성 -->
+  <rosparam param="move_base/global_costmap">
+    global_frame: odom
+    robot_base_frame: base_link
+    update_frequency: 5.0
+    publish_frequency: 2.0
+    transform_tolerance: 0.5
+    static_map: false
+    rolling_window: true
+    width: 20.0
+    height: 20.0
+    resolution: 0.05
+    plugins:
+      - {name: obstacles, type: "costmap_2d::ObstacleLayer"}
+      - {name: inflation, type: "costmap_2d::InflationLayer"}
+  </rosparam>
+
+  <rosparam param="move_base/local_costmap">
+    global_frame: odom
+    robot_base_frame: base_link
+    update_frequency: 10.0
+    publish_frequency: 10.0
+    transform_tolerance: 0.5
+    static_map: false
+    rolling_window: true
+    width: 6.0
+    height: 6.0
+    resolution: 0.05
+    plugins:
+      - {name: obstacles, type: "costmap_2d::ObstacleLayer"}
+      - {name: inflation, type: "costmap_2d::InflationLayer"}
+  </rosparam>
+
+  <!-- TEB 파라미터 -->
+  <rosparam file="$(find teb_stage_demo)/config/teb_local_planner_params.yaml" command="load" ns="move_base"/>
+
+  <!-- move_base: 글로벌 플래너는 odom 기준에서도 동작 가능한 GlobalPlanner로 (혹은 navfn 그대로도 무방) -->
+  <node pkg="move_base" type="move_base" name="move_base" output="screen">
+    <param name="base_global_planner" value="global_planner/GlobalPlanner"/>
+    <param name="base_local_planner"  value="teb_local_planner/TebLocalPlannerROS"/>
+
+    <!-- 관성/복구 등 기본 -->
+    <param name="controller_frequency" value="10.0"/>
+    <param name="planner_frequency"    value="1.0"/>
+    <param name="recovery_behavior_enabled" value="true"/>
+    <param name="clearing_rotation_allowed" value="true"/>
+
+    <!-- 스캔 소스: 공통 params에서 observation_sources=scan, topic=/base_scan 로딩됨 -->
+  </node>
+  <!-- RViz auto start -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find teb_stage_demo)/rviz/demo.rviz"/>
+</launch>

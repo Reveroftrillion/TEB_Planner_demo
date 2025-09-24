@@ -1,0 +1,10 @@
+<launch>
+  <node pkg="map_server" type="map_server" name="map_server" args="$(find teb_stage_demo)/maps/simple_map.yaml" />
+  <node pkg="amcl" type="amcl" name="amcl">
+    <param name="use_map_topic" value="true"/>
+    <param name="laser_min_range" value="0.05"/>
+    <param name="laser_max_range" value="6.0"/>
+    <param name="odom_model_type" value="diff"/>
+    <remap from="scan" to="/base_scan"/>
+  </node>
+</launch>

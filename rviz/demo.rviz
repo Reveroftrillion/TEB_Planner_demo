@@ -1,0 +1,54 @@
+Panels:
+  - Class: rviz/Displays
+    Name: Displays
+  - Class: rviz/Help
+    Name: Help
+  - Class: rviz/Views
+    Name: Views
+Visualization Manager:
+  Class: ""
+  Fixed Frame: odom
+  Displays:
+    - Class: rviz/Grid
+      Name: Grid
+      Enabled: true
+    - Class: rviz/TF
+      Name: TF
+      Enabled: true
+    - Class: rviz/LaserScan
+      Name: LaserScan
+      Enabled: true
+      Topic: /base_scan
+      Queue Size: 10
+    - Class: rviz/Path
+      Name: Global Plan
+      Enabled: true
+      Topic: /move_base/GlobalPlanner/plan
+      Buffer Length: 5
+    - Class: rviz/Path
+      Name: Local Plan (TEB)
+      Enabled: true
+      Topic: /move_base/TebLocalPlannerROS/local_plan
+      Buffer Length: 2
+    - Class: rviz/Map
+      Name: Global Costmap
+      Enabled: true
+      Topic: /move_base/global_costmap/costmap
+    - Class: rviz/Map
+      Name: Local Costmap
+      Enabled: true
+      Topic: /move_base/local_costmap/costmap
+  Global Options:
+    Background Color: 48; 48; 48
+  Tools:
+    - Class: rviz/Interact
+    - Class: rviz/SetInitialPose
+      Topic: /initialpose
+    - Class: rviz/SetGoal
+      Topic: /move_base_simple/goal
+  Views:
+    Current:
+      Class: rviz/Orbit
+      Distance: 10
+      Pitch: 0.5
+      Yaw: 0.5
