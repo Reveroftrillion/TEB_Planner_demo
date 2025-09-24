@@ -1,7 +1,7 @@
 # TEB Planner Demo
 
 이 저장소는 **ROS1 환경에서 TEB Local Planner**를 테스트하기 위한 스터디용 데모 패키지입니다.  
-`stage_ros` 시뮬레이터와 `move_base`를 기반으로 간단한 맵(`simple.world`)에서 TEB 로컬 플래너를 실행할 수 있도록 구성되어 있습니다.
+`stage_ros` 시뮬레이터와 `move_base`를 기반으로 간단한 맵(`parallel_park.world`와 `t_course.world`)에서 TEB 로컬 플래너를 실행할 수 있도록 구성되어 있습니다.
 
 ## Features
 - `stage_ros` 시뮬레이터를 이용한 2D 환경 구성
@@ -23,7 +23,9 @@ source devel/setup.bash
 roscore
 
 # Terminal 2
-rosrun stage_ros stageros $(rospack find teb_stage_demo)/worlds/simple.world
+rosrun stage_ros stageros $(rospack find teb_stage_demo)/worlds/t_course.world
+# OR
+rosrun stage_ros stageros $(rospack find teb_stage_demo)/worlds/parallel_park.world
 
 # Terminal 3
 roslaunch teb_stage_demo bringup.launch
@@ -41,7 +43,8 @@ teb_stage_demo/
 │   ├── local_costmap_params.yaml
 │   └── costmap_common_params.yaml
 ├── worlds/
-│   └── simple.world
+│   └── t_course.world
+│   └── parallel_park.world
 └── CMakeLists.txt
 ```
 
